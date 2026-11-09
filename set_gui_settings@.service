@@ -1,0 +1,13 @@
+[Unit]
+Description=SetUserGuiSettings
+Requires=gdm.service set_gui_permissions@root.service
+After=gdm.service set_gui_permissions@root.service
+
+[Service]
+Type=oneshot
+User=%u
+ExecStart=/usr/bin/runuser -u %i -- /usr/bin/env DISPLAY=:0 /usr/bin/sh -c "echo -e USER: $USER on display $DISPLAY" && /usr/bin/gsettings set org.gnome.desktop.interface enable-animations false
+RemainAfterExit=yes
+
+[Install]
+WantedBy=gdm.service set_gui_permissions@root.service
